@@ -1,240 +1,84 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Postres disponibles</title>
-  <style>
+{% extends "base.html" %}
+
+{% block content %}
+<!-- ✅ Bootstrap 5 CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #d8b4fe, #c084fc, #a855f7, #9333ea);
-      background-size: 400% 400%;
-      animation: gradientBG 10s ease infinite;
-      margin: 0;
-      padding: 20px;
+        margin: 0;
+        background: linear-gradient(-45deg, #d8b4fe, #c084fc, #a855f7, #9333ea);
+        background-size: 400% 400%;
+        animation: gradientBackground 10s ease infinite;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    @keyframes gradientBG {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
+    @keyframes gradientBackground {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
 
-    h1 {
-      text-align: center;
-      color: white;
-      margin-bottom: 30px;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      max-width: 1200px;
-      margin: auto;
+    .vitrina-container {
+        padding: 3rem 1rem;
     }
 
     .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 10px;
-      text-align: center;
-      transition: transform 0.2s;
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        transition: transform 0.2s ease-in-out;
     }
 
     .card:hover {
-      transform: scale(1.05);
-    }
-
-    .card-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin: 5px 0 10px 0;
-      color: #5a2d82;
+        transform: scale(1.05);
     }
 
     .card img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      border-radius: 12px;
-      background: #fff;
-      margin-bottom: 10px;
+        border-radius: 1rem 1rem 0 0;
+        height: 200px;
+        object-fit: cover;
     }
 
-    .price {
-      font-size: 16px;
-      font-weight: bold;
-      color: green;
-      margin: 5px 0 10px 0;
+    .btn-primary {
+        background-color: #9333ea;
+        border: none;
     }
 
-    .btn {
-      background: #a855f7;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-      width: 100%;
+    .btn-primary:hover {
+        background-color: #7e22ce;
     }
+</style>
 
-    .btn:hover {
-      background: #9333ea;
-    }
-  </style>
-</head>
-<body>
+<div class="vitrina-container">
+    <h1 class="text-center text-white fw-bold mb-5">🍰 Vitrina de Postres</h1>
 
-  <h1>🍰 Postres disponibles</h1>
-
-  <div class="container">
-    
-    <div class="card">
-      <h3 class="card-title">Cheesecake de Fresa</h3>
-      <img src="https://drive.google.com/file/d/1Ov7S-8dgMl4ZyHQ4VEuEQZaC7ikunZFj/view?usp=drive_link" alt="Cheesecake de Fresa">
-      <p class="price">$12000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
+    <div class="container">
+        <div class="row g-4">
+            {% for postre in postres %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card h-100">
+                    <img src="{{ url_for('static', filename=postre[3]) }}" alt="{{ postre[1] }}">
+                    <div class="card-body text-center">
+                        <h5 class="fw-bold">{{ postre[1] }}</h5>
+                        <p class="text-success fw-semibold mb-3">$ {{ "%.0f"|format(postre[2]) }}</p>
+                        <a href="{{ url_for('agregar_carrito', id_postre=postre[0]) }}" class="btn btn-primary w-100 rounded-3">
+                            🛒 Agregar al carrito
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
+</div>
 
-    <div class="card">
-      <h3 class="card-title">Tiramisú Clásico</h3>
-      <img src="https://i.imgur.com/0nV8QxQ.jpg" alt="Tiramisú Clásico">
-      <p class="price">$15000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
+<!-- ✅ Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
 
-    <div class="card">
-      <h3 class="card-title">Brownie con Helado</h3>
-      <img src="https://i.imgur.com/DQyItqp.jpg" alt="Brownie con Helado">
-      <p class="price">$10000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
 
-    <div class="card">
-      <h3 class="card-title">Tres Leches</h3>
-      <img src="https://i.imgur.com/SU3zOmD.jpg" alt="Tres Leches">
-      <p class="price">$11000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
 
-    <div class="card">
-      <h3 class="card-title">Flan Napolitano</h3>
-      <img src="https://i.imgur.com/lB0PGRJ.jpg" alt="Flan Napolitano">
-      <p class="price">$8000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Mousse de Chocolate</h3>
-      <img src="https://i.imgur.com/IkLkcpJ.jpg" alt="Mousse de Chocolate">
-      <p class="price">$13000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Cupcake Vainilla</h3>
-      <img src="https://i.imgur.com/jZy7h3R.jpg" alt="Cupcake Vainilla">
-      <p class="price">$7000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Cupcake Red Velvet</h3>
-      <img src="https://i.imgur.com/suF03rO.jpg" alt="Cupcake Red Velvet">
-      <p class="price">$8000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Tarta de Limón</h3>
-      <img src="https://i.imgur.com/HpZafAz.jpg" alt="Tarta de Limón">
-      <p class="price">$14000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Galletas Chispas de Chocolate</h3>
-      <img src="https://i.imgur.com/6gy4uHl.jpg" alt="Galletas Chispas de Chocolate">
-      <p class="price">$6000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Helado Artesanal</h3>
-      <img src="https://i.imgur.com/EBfBKq.jpg" alt="Helado Artesanal">
-      <p class="price">$9000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Pastel de Zanahoria</h3>
-      <img src="https://i.imgur.com/gTXDk9W.jpg" alt="Pastel de Zanahoria">
-      <p class="price">$13500</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Torta de Chocolate</h3>
-      <img src="https://i.imgur.com/h6dyDgH.jpg" alt="Torta de Chocolate">
-      <p class="price">$15000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Profiteroles</h3>
-      <img src="https://i.imgur.com/Vv4llgQ.jpg" alt="Profiteroles">
-      <p class="price">$12000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Churros con Arequipe</h3>
-      <img src="https://i.imgur.com/6TXO53o.jpg" alt="Churros con Arequipe">
-      <p class="price">$8000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Donas Glaseadas</h3>
-      <img src="https://i.imgur.com/kpM9v7W.jpg" alt="Donas Glaseadas">
-      <p class="price">$7000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Macarons Franceses</h3>
-      <img src="https://i.imgur.com/x3iIJkQ.jpg" alt="Macarons Franceses">
-      <p class="price">$16000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Pavlova de Frutas</h3>
-      <img src="https://i.imgur.com/3oE3ExB.jpg" alt="Pavlova de Frutas">
-      <p class="price">$17000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Crepes con Nutella</h3>
-      <img src="https://i.imgur.com/qL6CtH4.jpg" alt="Crepes con Nutella">
-      <p class="price">$13000</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-    <div class="card">
-      <h3 class="card-title">Rollos de Canela</h3>
-      <img src="https://i.imgur.com/sY9w4aV.jpg" alt="Rollos de Canela">
-      <p class="price">$9500</p>
-      <button class="btn">🛒 Agregar al carrito</button>
-    </div>
-
-  </div>
-</body>
-</html>
 
 
 
